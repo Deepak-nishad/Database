@@ -1,0 +1,153 @@
+											Day 1
+			
+	create database Assignments_Knowit;
+
+	show databases;
+		
+	use Assignments_Knowit;
+	
+	show tables;
+
+	create table Vechicle;
+	
+	ERROR 4028 (HY000): A table must have at least one visible column.
+
+--------------------------------------------------------------------------------------------------------------------
+
+	create table Vechicle (vid int, name varchar(20), discount float, milage int, details varchar(50) );
+
+--------------------------------------------------------------------------------------------------------------------
+
+	describe vechicle;
+
+	system cls (clear the cmd )
+
+	insert into vechicle values(1, "Activa", 10, 35, "two wheeler . sturdy milage 30 km", 80000);
+
+	insert multiple row
+
+	insert into vechicle values(2, "Santro", 20, 20, "product of hynduai", 95000),
+ 				   (3, "Yamaha", 5, 77, "sturdy and good milage", 160000),
+    				   (4, "i-10", 8,18, "good small car", 300000),
+ 				   (5, "Wagnar", 10,25, "good milage car", 250000),
+   				   (6, "Hero saplender", 9,65, "best bike", 75000),
+    				   (7, "royal enfiled bike", 5,40, "a royal enfield bike", 190000);
+
+--------------------------------------------------------------------------------------------------------------------
+
+		
+	 create table Customers;
+
+	 insert into Customers values(1, "Nilima", "Pimpri"),
+ 				   (2, "Ganesh", "Pune"),
+    				   (3, "kishore", "kothrud"),
+				   (4, "Priya", "Aundh");
+
+--------------------------------------------------------------------------------------------------------------------
+
+	create table Salesman (sid int, sname varchar(20), city varchar(50), experience int );
+
+	create table Salesman;
+
+	 insert into Salesman values(10, "Rajesh", "Mumbai", 5),
+ 				  (11, "Seema", "Pune", 8),
+    				   (12, "Shailesh", "Nagpur", 7),
+				 (13, "Rakhi", "Pune", 2);
+		
+--------------------------------------------------------------------------------------------------------------------
+	select *
+    	from Salesman
+    	 where city="pune";
+--------------------------------------------------------------------------------------------------------------------
+
+	delete 
+	from Customers
+	where location="Pimpri";
+--------------------------------------------------------------------------------------------------------------------
+
+	insert into customers values(5,"Geeta", "pimpri");
+
+
+	insert into customers values(6,"Raj", "Aundh");
+
+
+	 insert into customers values(7,"Yash", "Aundh");
+--------------------------------------------------------------------------------------------------------------------
+	 delete  from customers where cname="Priya" &&  location="Aundh";
+
+--------------------------------------------------------------------------------------------------------------------
+
+	select * from vechicle where name="royal enfiled bike";
+
+--------------------------------------------------------------------------------------------------------------------
+
+	 select * from vechicle where vid>=6;
+
+--------------------------------------------------------------------------------------------------------------------
+
+	 select * from vechicle where vid=3 || vid=6 || vid=7;
+	 select * from vechicle where vid in(3,6,7);
+--------------------------------------------------------------------------------------------------------------------
+
+	 update  vechicle set price=80000 where price=75000;
+
+------------------------------------------------------------------------------------------------------------------
+
+	select * from vechicle where name ="i-10";
+
+
+------------------------------------------------------------------------------------------------------------------
+	
+	select vid, name, price, details ,  price-(price*discount)/100 "total price" from vechicle;
+------------------------------------------------------------------------------------------------------------------
+
+	select * from vechicle  where price<100000;
+
+-------------------------------------------------------------------------------------------------------------------
+
+		CREATE TABLE employee (
+    			eno INT ,
+   			ename VARCHAR(50),
+    			basic INT,
+    			incentive INT
+			    );
+
+		INSERT INTO employee (eno, ename, basic, incentive) VALUES
+			CREATE TABLE employee (
+    			eno INT PRIMARY KEY,
+    			ename VARCHAR(50),
+    			basic INT,
+    			incentive INT
+  		 );
+
+		INSERT INTO employee (eno, ename, basic, incentive) VALUES
+			(1, 'Rajesh', 20000, 1500),
+			(2, 'Sarita', 25000, 1000),
+			(3, 'Meera', 15000, 3000),
+			(4, 'Jitesh', 30000, 500),
+			(5, 'Ramesh', 12000, 3000);
+
+		select * from employee where basic >15000;
+
+------------------------------------------------------------------------------------------------------------------
+
+		 update employee set incentive=1000 where ename="jitesh";
+
+------------------------------------------------------------------------------------------------------------------
+
+		update employee  set basic=basic+ (basic*5)/100 where basic<20000;
+
+
+------------------------------------------------------------------------------------------------------------------
+		insert into employee values(20, "Ajay", 16000, null);
+
+------------------------------------------------------------------------------------------------------------------
+
+		 delete from employee where ename="Meera";
+
+------------------------------------------------------------------------------------------------------------------
+
+		 update employee  set basic=60000 where ename="Ramesh";
+
+
+	
