@@ -1,0 +1,83 @@
+
+	Select sum(sal)
+	from emp;
+	
++----------+
+| sum(sal) |
++----------+
+| 29025.00 |
++----------+
+	
+=====================================
+
+	select deptno, sum(sal)
+	from emp
+	group by deptno
+	having sum(sal)>10000;
+	
++--------+----------+
+| deptno | sum(sal) |
++--------+----------+
+|     20 | 10875.00 |
++--------+----------+
+=====================================
+
+	select job, sum(sal)
+	from emp
+	group by job
+	having sum(sal)>9000;
+=======================================
+
+	select job , max(sal)
+	from emp
+	where job in('manager', 'salesman', 'clerk') and
+	 deptno in (10,20)
+	 group by job
+	 order by max(sal) desc;
++---------+----------+
+| job     | max(sal) |
++---------+----------+
+| MANAGER |  2975.00 |
+| CLERK   |  1300.00 |
++---------+---------
+
+==========================================
+
+	select job , count(ename)
+	from emp
+	group by job
+	having sum(sal)>3000;
+	
+=========================================
+	select deptno , count(job)
+	from emp
+	group by deptno
+	having count(job)>=4;
+	
++--------+------------+
+| deptno | count(job) |
++--------+------------+
+|     20 |          5 |
+|     30 |          6 |
++--------+------------+
+
+=============================================
+	select  sum(sal), min(sal)
+	from emp
+	where job="manager";
+	
+	+----------+----------+
+| sum(sal) | min(sal) |
++----------+----------+
+|  8275.00 |  2450.00 |
++----------+----------+
+
+======================================
+	select sum(sal), deptno
+	from emp
+	where job="clerk" 
+	group by deptno;
+	having count(deptno)>=2;
+
+	
+	
