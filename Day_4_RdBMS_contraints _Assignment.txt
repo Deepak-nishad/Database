@@ -1,0 +1,67 @@
+
+	create table course
+	(
+	cid varchar(20) primary key,
+	cname varchar(20) unique not null,
+	fees int default 500
+	
+	);
+	
+	
+
+ INSERT INTO course (cid, cname, fees) VALUES
+('c1', 'Coer Java', 7000),
+('c2', 'Linux', 8000),
+('c3', 'Data Structure', 10000),
+('c4', 'Python', 12000),
+('c5', 'Dot Net', 5000), -- fees default applied because NULL not allowed
+('c6', 'Big Data', 20000);
+ 
+ select * from course;
++-----+----------------+-------+
+| cid | cname          | fees  |
++-----+----------------+-------+
+| c1  | Core java      |  7000 |
+| c2  | Linux          |  8000 |
+| c3  | Data Structure | 10000 |
+| c4  | Python         | 12000 |
+| c5  | Dot Net        |  5000 |
+| c6  | Big Data       | 20000 |
++-----+----------------+-------+
+ 
+
+================================================
+	create table trainer(
+	tid int primary key,
+	tname varchar(20) not null,
+	experience int check(experience>=10),
+	salary int default 2000,
+	cid varchar(20),
+	foreign key (cid) references course(cid)
+
+	);
+	
+	
+
+==============================================
+
+	
+	
+	INSERT INTO course (cid, cname, fees) VALUES
+('c2', 'Linux', 8000),
+('c3', 'Data Structure', 10000),
+('c4', 'Python', 12000),
+('c5', 'Dot Net', 5000), 
+('c6', 'Big Data', 20000);
+	
+	==================================
+	
+	insert INTO trainer (tid, tname, cid, salary, experience) VALUES
+('t1', 'Amit', 'c2', 22000, 12),
+('t2', 'Rajan', 'c1', 25000, 15),
+('t3', 'Shruti','c2', 20000, 11),
+('t4', 'Arti', 'c2', 24000, 14),
+('t5', 'Sameer','c3', 26000, 18),
+('t6', 'Sanjay', NULL, 23000, 13),
+('t7', 'Soha', NULL, 20000, 10);
+
