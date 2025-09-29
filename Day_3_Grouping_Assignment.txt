@@ -76,8 +76,37 @@
 	select sum(sal), deptno
 	from emp
 	where job="clerk" 
-	group by deptno;
+	group by deptno
 	having count(deptno)>=2;
 
+	+----------+--------+
+| sum(sal) | deptno |
++----------+--------+
+|  1900.00 |     20 |
++----------+--------+
+
+==========================================
+
+	select  count(ename)
+	from emp
+	where sal>1500
+	group by deptno;
+	
+=========================================
+
+	select ename, count(job)
+	from emp
+	where job="analyst"
+	group by ename;
+	
+==============================================
+
+	select min(sal), max(sal), sum(sal)
+	from emp
+	where job="clerk";
+	
+==============================================
+
+	
 	
 	
