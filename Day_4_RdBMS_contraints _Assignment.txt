@@ -47,12 +47,7 @@
 
 	
 	
-	INSERT INTO course (cid, cname, fees) VALUES
-('c2', 'Linux', 8000),
-('c3', 'Data Structure', 10000),
-('c4', 'Python', 12000),
-('c5', 'Dot Net', 5000), 
-('c6', 'Big Data', 20000);
+
 	
 	==================================
 	
@@ -64,4 +59,6 @@
 ('t5', 'Sameer','c3', 26000, 18),
 ('t6', 'Sanjay', NULL, 23000, 13),
 ('t7', 'Soha', NULL, 20000, 10);
+
+
 
