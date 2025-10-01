@@ -1,0 +1,91 @@
+-- Faculty Table
+CREATE TABLE faculty(
+    fid INT PRIMARY KEY,
+    fname VARCHAR(20) NOT NULL,
+    sp_skill1 VARCHAR(30),
+    sp_skill2 VARCHAR(30)
+);
+
+-- Insert data into Faculty
+INSERT INTO faculty VALUES (10, 'Amol', 'Database', 'Java');
+INSERT INTO faculty VALUES (11, 'Asha', 'Java', 'MySQL');
+INSERT INTO faculty VALUES (12, 'Kiran', 'CPP', 'Database');
+INSERT INTO faculty VALUES (13, 'Seeta', 'MySQL', 'Database');
+
+
+-- Room Table
+CREATE TABLE room(
+    rid INT PRIMARY KEY,
+    rname VARCHAR(15) NOT NULL,
+    rloc VARCHAR(20)
+);
+
+-- Insert data into Room
+INSERT INTO room VALUES (100, 'Jasmin', '1st floor');
+INSERT INTO room VALUES (101, 'Rose', '2nd floor');
+INSERT INTO room VALUES (105, 'Lotus', '1st floor');
+INSERT INTO room VALUES (103, 'Mogra', '1st floor');
+
+
+-- Courses Table
+CREATE TABLE courses(
+    cid INT PRIMARY KEY,
+    cname VARCHAR(15) NOT NULL,
+    rid INT,
+    fid INT,
+    FOREIGN KEY (rid) REFERENCES room(rid) ON DELETE SET NULL,
+    FOREIGN KEY (fid) REFERENCES faculty(fid) ON DELETE SET NULL
+);
+
+-- Insert data into Courses
+INSERT INTO courses VALUES (121, 'DBDA', 100, 10);
+INSERT INTO courses VALUES (131, 'DAC', 101, NULL);
+INSERT INTO courses VALUES (141, 'DTISS', NULL, NULL);
+INSERT INTO courses VALUES (151, 'DOIT', 105, 12);
+
+
+select * 
+from room
+where  rid not in(select rid 
+					from courses where rid is not null );
+		
+===============================================
+
+select * 
+from room
+where  rid in(select rid 
+			from courses 
+			where rid  is not null )
+			or rid not in
+			(select rid 
+			from courses 
+			where rid  is not null );
+			
+
+===============================================
+
+			
+			
+			select c.cname , c.fid , f.fid, f.fname
+			from courses c
+			join faculty f
+			on c.fid=f.fid
+			
+===============================================
+
+			select c.cname, f.fname , r.rname 
+			from courses c
+			join faculty f
+			on c.fid=f.fid
+			join room r 
+			on c.rid=r.rid;
+			
++-------+-------+--------+
+| cname | fname | rname  |
++-------+-------+--------+
+| DBDA  | Amol  | Jasmin |
+| DOIT  | Kiran | Lotus  |
++-------+-------+--------+
+			
+		
+		
