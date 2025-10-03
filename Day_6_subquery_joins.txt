@@ -86,6 +86,39 @@ where  rid in(select rid
 | DBDA  | Amol  | Jasmin |
 | DOIT  | Kiran | Lotus  |
 +-------+-------+--------+
+
+
+===========================================================
+							joins
+							=====
+							
+	select p.pname, s.sname
+	from product p
+	join salesman_subquery s
+	on p.sid=s.sid
+	where s.sname='kirti';
 			
++--------+-------+
+| pname  | sname |
++--------+-------+
+| lays   | Kirti |
+| nachos | Kirti |
++--------+-------+
 		
+=====================================================
+
+	select e.empno, e.ename, e.sal, e.deptno, d.dname, d.loc, d.deptno
+	from emp e
+	join dept d
+	on e.deptno=d.deptno
+	where e.job="manager" and date_format(hiredate, "%Y")=1981;
 		
++-------+-------+---------+--------+------------+----------+--------+
+| empno | ename | sal     | deptno | dname      | loc      | deptno |
++-------+-------+---------+--------+------------+----------+--------+
+|  7782 | CLARK | 2450.00 |     10 | ACCOUNTING | NEW YORK |     10 |
+|  7566 | JONES | 2975.00 |     20 | RESEARCH   | DALLAS   |     20 |
+|  7698 | BLAKE | 2850.00 |     30 | SALES      | CHICAGO  |     30 |
++-------+-------+---------+--------+------------+----------+--------+
+
+=========================================================
