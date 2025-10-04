@@ -1,0 +1,381 @@
+ delimiter //
+mysql> create function calculate(a decimal(7,2),b decimal(7,2)) returns decimal
+    -> begin
+    ->    declare p decimal(7,2);
+    ->    set p=a+ifnull(b,0);
+    ->    return p;
+    -> end //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter ;
+mysql> select ename, sal, comm, calculate (sal, comm) from emp;
++--------+----------+---------+-----------------------+
+| ename  | sal      | comm    | calculate (sal, comm) |
++--------+----------+---------+-----------------------+
+| SMITH  |   800.00 |    NULL |                   800 |
+| ALLEN  |  1600.00 |  300.00 |                  1900 |
+| WARD   |  1250.00 |  500.00 |                  1750 |
+| JONES  |  2975.00 |    NULL |                  2975 |
+| MARTIN |  1250.00 | 1400.00 |                  2650 |
+| BLAKE  |  2850.00 |    NULL |                  2850 |
+| CLARK  |  2450.00 |    NULL |                  2450 |
+| SCOTT  |  3000.00 |    NULL |                  3000 |
+| KING   |  5000.00 |    NULL |                  5000 |
+| TURNER |  1500.00 |    0.00 |                  1500 |
+| ADAMS  |  1100.00 |    NULL |                  1100 |
+| JAMES  |   950.00 |    NULL |                   950 |
+| FORD   |  3000.00 |    NULL |                  3000 |
+| MILLER |  1300.00 |    NULL |                  1300 |
+| Geeta  | 10000.00 |  300.00 |                 10300 |
+| raj    |     NULL |    NULL |                  NULL |
+| Raj    |     NULL |    NULL |                  NULL |
+| Raj    |     NULL |    NULL |                  NULL |
++--------+----------+---------+-----------------------+
+
+=======================================================
+
+delimiter //
+create function email(e varchar(15),d int,j varchar(15)) returns varchar(25)
+begin
+   declare p varchar(25);
+   set p=concat(substr(e,1,2),d,substr(j,-2,2),'@knowit.com');
+   return p;
+end //
+delimiter ;
+
+ select ename , deptno, job,  email(ename, deptno, job) from emp;
++--------+--------+-----------+---------------------------+
+| ename  | deptno | job       | email(ename, deptno, job) |
++--------+--------+-----------+---------------------------+
+| SMITH  |     20 | CLERK     | SM20RK@knowit.com         |
+| ALLEN  |     30 | SALESMAN  | AL30AN@knowit.com         |
+| WARD   |     30 | SALESMAN  | WA30AN@knowit.com         |
+| JONES  |     20 | MANAGER   | JO20ER@knowit.com         |
+| MARTIN |     30 | SALESMAN  | MA30AN@knowit.com         |
+| BLAKE  |     30 | MANAGER   | BL30ER@knowit.com         |
+| CLARK  |     10 | MANAGER   | CL10ER@knowit.com         |
+| SCOTT  |     20 | ANALYST   | SC20ST@knowit.com         |
+| KING   |     10 | PRESIDENT | KI10NT@knowit.com         |
+| TURNER |     30 | SALESMAN  | TU30AN@knowit.com         |
+| ADAMS  |     20 | CLERK     | AD20RK@knowit.com         |
+| JAMES  |     30 | CLERK     | JA30RK@knowit.com         |
+| FORD   |     20 | ANALYST   | FO20ST@knowit.com         |
+| MILLER |     10 | CLERK     | MI10RK@knowit.com         |
+| Geeta  |     20 | NULL      | NULL                      |
+| raj    |     40 | Analyst   | ra40st@knowit.com         |
+| Raj    |     20 | ANALYST   | Ra20ST@knowit.com         |
+| Raj    |     20 | ANALYST   | Ra20ST@knowit.com         |
++--------+--------+-----------+---------------------------+
+
+===================================================
+
+DELIMITER //
+
+CREATE FUNCTION factorial(n INT) RETURNS INT
+BEGIN
+   DECLARE fact INT DEFAULT 1;
+   DECLARE i INT DEFAULT 1;
+   
+   WHILE i <= n DO
+      SET fact = fact * i;
+      SET i = i + 1;
+   END WHILE;
+   
+   RETURN fact;
+END //
+
+DELIMITER ;
+
+
+DELIMITER //
+
+CREATE PROCEDURE proc1(INOUT num INT)
+BEGIN
+    IF num > 0 THEN
+        SET num = factorial(num);
+    END IF;
+END //
+
+DELIMITER ;
+
+
+SET @p = 6;
+CALL proc1(@p);
+SELECT @p;
+
+ SELECT @p;
++------+
+| @p   |
++------+
+|  120 |
+
+
+
+ delimiter //
+ 
+ create trigger after_insert_product
+     after insert
+    on order_master
+    for each row
+    begin
+    declare p float(8,2);
+    set p= new.qty*new.price;
+    insert into order_log
+    values(new.oid, curdate(), p);
+    end //
+delimiter ;
+
+
+  update employees
+    -> set eno=1, ename='deepak', designation='developer', sal=81000
+    -> where eno=2;
+	
+	
+====================================================
+
+ drop table employees;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table employees
+    -> (eno int primary key auto_increment,
+    ->  ename varchar(15),
+    ->  designation varchar(20),
+    ->  sal decimal(7,2)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> insert into employees(ename ,designation,sal)
+    -> values('Seema','Manager',80000),('Amol','Salesman',50000);
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> delimiter //
+mysql> create trigger before_update_emp
+    -> before update
+    -> on employees
+    -> for each row
+    -> begin
+    ->   insert into log_table
+    ->   values(new.eno,new.ename,new.designation,old.designation,new.sal,old.sal,curdate());
+    -> end //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter ;
+mysql> update employees
+    -> set designation ='Sr.Manager',sal=90000
+    -> where ename='seema';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employees;
++-----+-------+-------------+----------+
+| eno | ename | designation | sal      |
++-----+-------+-------------+----------+
+|   1 | Seema | Sr.Manager  | 90000.00 |
+|   2 | Amol  | Salesman    | 50000.00 |
++-----+-------+-------------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select * from log_table;
++------+-------+------------+---------+------------+------------+--------------+
+| eno  | ename | new_job    | old_job | new_income | old_income | promition_dt |
++------+-------+------------+---------+------------+------------+--------------+
+|    1 | Seema | Sr.Manager | Manager |   90000.00 |   80000.00 | 2025-10-04   |
++------+-------+------------+---------+------------+------------+--------------+
+1 row in set (0.00 sec)
+
+mysql> update employees
+    -> set designation ='Director'
+    -> where ename='seema';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from log_table;
++------+-------+------------+------------+------------+------------+--------------+
+| eno  | ename | new_job    | old_job    | new_income | old_income | promition_dt |
++------+-------+------------+------------+------------+------------+--------------+
+|    1 | Seema | Sr.Manager | Manager    |   90000.00 |   80000.00 | 2025-10-04   |
+|    1 | Seema | Director   | Sr.Manager |   90000.00 |   90000.00 | 2025-10-04   |
++------+-------+------------+------------+------------+------------+--------------+
+2 rows in set (0.00 sec)
+
+mysql>
+
+=============================================================
+
+Mam 
+======>
+
+
+Triggers
+
+After Insert
+------------
+create table order_master
+(oid int primary key auto_increment,
+ pname varchar(15),
+ qty int,
+ price float(8,2)
+);
+
+insert into order_master(pname,qty,price)
+values('pen',120,5);
+
+insert into order_master(pname,qty,price)
+values('eraser',80,15);
+
+create table order_log
+(oid int,
+ order_dat date,
+ amt float(8,2) 
+);
+
+delimiter //
+create trigger after_insert_product
+after insert
+on order_master
+for each row
+begin
+    declare p float(8,2);
+    set p=new.qty*new.price;
+    insert into order_log
+    values(new.oid,curdate(),p);
+end //
+delimiter ;
+
+mysql> select * from order_master;
++-----+--------+------+-------+
+| oid | pname  | qty  | price |
++-----+--------+------+-------+
+|   1 | pen    |  120 |  5.00 |
+|   2 | eraser |   80 | 15.00 |
++-----+--------+------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select * from order_log;
++------+------------+---------+
+| oid  | order_dat  | amt     |
++------+------------+---------+
+|    1 | 2025-10-04 |  600.00 |
+|    2 | 2025-10-04 | 1200.00 |
++------+------------+---------+
+2 rows in set (0.00 sec)
+
+------------------------------------------
+before delete
+
+ create table customer_master
+(cust_id int primary key auto_increment,
+ cust_name varchar(15),
+ acc_no varchar(20),
+ ph_no int
+);     
+  
+create table customer_log
+(cust_id int,
+ closing_date date,
+ ph_no int
+);
+
+insert into customer_master(cust_name ,acc_no,ph_no)
+values('Ajit','as234f523',12334),('Sameer','as234f523',92334),
+('Geeta','a3s234f523',88334);
+ 
+delimiter //
+create trigger before_delete_customer
+before delete
+on customer_master
+for each row
+begin
+  insert into customer_log
+  values(old.cust_id,curdate(),old.ph_no);
+end //
+delimiter ;
+
+
+=========
+ delete from customer_master where cust_id=1;
+
+--------------------------------
+before update
+
+create table employees
+(eno int primary key auto_increment,
+ ename varchar(15),
+ designation varchar(20),
+ sal decimal(7,2)
+);
+
+insert into employees(ename ,designation,sal)
+values('Seema','Manager',80000),('Amol','Salesman',50000);
+
+create table log_table
+(eno int,
+ ename varchar(15),
+ new_job  varchar(20),
+ old_job varchar(20),
+ new_income decimal(7,2),
+ old_income decimal(7,2),
+ promition_dt date
+);
+
+delimiter //
+create trigger before_update_emp
+before update
+on employees
+for each row
+begin
+  insert into log_table
+  values(new.eno,new.ename,new.designation,old.designation,new.sal,old.sal,curdate());
+end //
+delimiter ;
+
+update employees
+set designation ='Sr.Manager',sal=90000
+where ename='seema';
+
+update employees
+set designation ='Director' 
+where ename='seema';
+
+mysql> select * from employees;
++-----+-------+-------------+----------+
+| eno | ename | designation | sal      |
++-----+-------+-------------+----------+
+|   1 | Seema | Sr.Manager  | 90000.00 |
+|   2 | Amol  | Salesman    | 50000.00 |
++-----+-------+-------------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select * from log_table;
++------+-------+------------+---------+------------+------------+--------------+
+| eno  | ename | new_job    | old_job | new_income | old_income | promition_dt |
++------+-------+------------+---------+------------+------------+--------------+
+|    1 | Seema | Sr.Manager | Manager |   90000.00 |   80000.00 | 2025-10-04   |
++------+-------+------------+---------+------------+------------+--------------+
+1 row in set (0.00 sec)
+
+mysql> update employees
+    -> set designation ='Director'
+    -> where ename='seema';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employees;
++-----+-------+-------------+----------+
+| eno | ename | designation | sal      |
++-----+-------+-------------+----------+
+|   1 | Seema | Director    | 90000.00 |
+|   2 | Amol  | Salesman    | 50000.00 |
++-----+-------+-------------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select * from log_table;
++------+-------+------------+------------+------------+------------+--------------+
+| eno  | ename | new_job    | old_job    | new_income | old_income | promition_dt |
++------+-------+------------+------------+------------+------------+--------------+
+|    1 | Seema | Sr.Manager | Manager    |   90000.00 |   80000.00 | 2025-10-04   |
+|    1 | Seema | Director   | Sr.Manager |   90000.00 |   90000.00 | 2025-10-04   |
++------+-------+------------+------------+------------+------------+--------------+
+2 rows in set (0.00 sec)
